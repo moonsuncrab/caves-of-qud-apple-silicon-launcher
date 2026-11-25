@@ -12,7 +12,7 @@ The `.command` script is included as a terminal-based fallback. The `Build Launc
 
 ## Download a release
 
-Download the latest macOS ZIP from [GitHub Releases](https://github.com/moonsuncrab/qud-apple-silicon-launcher/releases/latest), extract it, and open **Caves of Qud Apple Silicon Launcher.app**. Each push to `main` builds a versioned Apple Silicon app and publishes it with a SHA-256 checksum. The release contains the app bundle; repository guidance files are not included.
+Download the latest macOS ZIP from [GitHub Releases](https://github.com/moonsuncrab/caves-of-qud-apple-silicon-launcher/releases/latest), extract it, and open **Caves of Qud Apple Silicon Launcher.app**. Each push to `main` builds a versioned Apple Silicon app and publishes it with a SHA-256 checksum. The release contains the app bundle; repository guidance files are not included.
 
 The app is ad hoc signed and is not notarized with an Apple Developer ID. macOS may ask you to approve it the first time you open it.
 
