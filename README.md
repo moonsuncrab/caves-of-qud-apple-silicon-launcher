@@ -25,6 +25,10 @@ The app is ad hoc signed and is not notarized with an Apple Developer ID. macOS 
 
 When Steam updates the game, the launcher checks the source files and refreshes its private copy. If the detected Steam build ID differs from `26370970`, it stops before changing the private copy.
 
+## Inspiration
+
+This launcher's Apple Silicon Harmony approach was inspired by the [Caves of Qud Japanese Mod (QudJP) project](https://github.com/ToaruPen/coq-japanese_stable).
+
 ## Logs and troubleshooting
 
 The GUI includes an **Open full log** button. The log is saved at `~/Library/Application Support/Caves of Qud Apple Silicon Launcher/launcher.log`. The game log is at `~/Library/Logs/Freehold Games/CavesOfQud/Player.log`.
