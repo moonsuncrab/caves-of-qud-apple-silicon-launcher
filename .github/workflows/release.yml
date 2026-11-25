@@ -1,0 +1,64 @@
+name: Build and release macOS app
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: macos-15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Build and package app
+        id: build
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          PLIST="AppTemplate/Info.plist"
+          VERSION_BASE="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$PLIST")"
+          BUILD_BASE="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$PLIST")"
+          VERSION="${VERSION_BASE}.${GITHUB_RUN_NUMBER}"
+          BUILD_NUMBER=$((BUILD_BASE + GITHUB_RUN_NUMBER))
+
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${VERSION}" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${BUILD_NUMBER}" "$PLIST"
+          "./Build Launcher App.command"
+
+          ASSET_NAME="Caves-of-Qud-Apple-Silicon-Launcher-${VERSION}-macOS.zip"
+          ASSET_PATH="${RUNNER_TEMP}/${ASSET_NAME}"
+          ditto -c -k --sequesterRsrc --keepParent \
+            "Caves of Qud Apple Silicon Launcher.app" \
+            "$ASSET_PATH"
+
+          (
+            cd "$RUNNER_TEMP"
+            shasum -a 256 "$ASSET_NAME" > "${ASSET_NAME}.sha256"
+          )
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "asset_path=${ASSET_PATH}" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.build.outputs.version }}
+          ASSET_PATH: ${{ steps.build.outputs.asset_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release create "v${VERSION}" \
+            "$ASSET_PATH" \
+            "${ASSET_PATH}.sha256" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "Caves of Qud Apple Silicon Launcher ${VERSION}" \
+            --generate-notes
