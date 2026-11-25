@@ -32,9 +32,3 @@ The GUI includes an **Open full log** button. The log is saved at `~/Library/App
 Review logs before sharing them in a public issue. Remove usernames, local paths, account details, and any other private information.
 
 If Pets of Harvest Dawn is not reported, check that Steam is open and signed in, the game is installed from the account that owns the DLC, and the Steam game folder contains `CoQ_Data/StreamingAssets/DLC/PetsPack1`. The launcher copies that entire data folder beside its private `CoQ.app`.
-
-## Current validation boundary
-
-The maintainer reports successfully using the current launcher to start and play Caves of Qud on an Apple Silicon Mac. This confirms that setup only; the launcher has not been independently checked across other Macs, Steam libraries, game builds, Workshop subscriptions, or DLC entitlements. On first use, confirm the GUI reports Steam connectivity, Pets of Harvest Dawn entitlement and DLC folder scan, and the expected Workshop count; then check that the mod and DLC content appear in game. The normal Steam launch continues to use the untouched Steam installation.
-
-The Harmony workaround follows the Apple Silicon workaround documented by the Caves of Qud Japanese mod project. Harmony is downloaded from its upstream release and is not redistributed in this package.
